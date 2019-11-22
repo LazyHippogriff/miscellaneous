@@ -1,0 +1,15 @@
+cmake_minimum_required(VERSION 3.0)
+
+project(UDM VERSION 1.0.1 LANGUAGES CXX)
+
+add_executable(UDM
+  db/src/JioUdmDbApis.cpp
+  db/src/JioUdmDbConnection.cpp
+  db/src/JioUdmDbUtilFuncs.cpp
+  db/test/JioUdmTest.cpp
+  db/test/JioMain.cpp)
+
+target_include_directories(UDM PRIVATE ./)
+target_include_directories(UDM PRIVATE /usr/local/include)
+set(CMAKE_CXX_FLAGS "-O2 -g")
+target_link_libraries(UDM PRIVATE hiredis_vip)
