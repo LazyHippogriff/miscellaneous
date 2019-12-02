@@ -1,0 +1,4 @@
+compile with -fno-omit-frame-pointer
+perf stat ./a.out
+perf record -g ./a.out
+perf report -g 'graph,0.5,caller'
