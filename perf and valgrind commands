@@ -1,0 +1,28 @@
+Perf
+compile with -fno-omit-frame-pointer
+perf stat ./a.out
+perf record -g ./a.out
+perf report -g 'graph,0.5,caller'
+
+
+perf stat -e cycles,instructions,l1d-loads,l1d-load-misses ./a.out
+stat: 				                presents statistics from whole run of program using counters from HW and linux kernel.
+cycles,instructions:	        Number of cycles per instruction is a proxy for how much the CPU is working or waiting. More instructions per cycle means the CPU is busy and reverse means that it’s idle.
+l1d-loads,l1d-load-misses:  	Number of reads from L1d cache, and number of misses. Speculative execution can make these numbers confusing.
+
+perf record -e cycles,instructions, l1d-loads,l1d-load-misses --call-graph=lbr
+record: 			        records where in your program the counters are gathered.
+--call-graph=lbr:	    Records call graph info, instead of just location. LBR requires no special compilation flags but it should be supported by the CPU.	
+
+                          *******************************************
+Valgrind
+
+valgrind --leak-check=full --show-reachable=yes --track-origins=yes ./RtTest
+
+valgrind –-tool=memcheck ./RtTest (for finding double-free like errors)
+
+valgrind --tool=callgrind --cache-sim=yes --branch-sim=yes --dump-instr=yes --collect-jumps=yes ./a.out
+--tool=callgrind:	Essentially a profiler that collects info about call hierarchies, number of calls and time spent. The CPU simulator is not cycle accurate so see timing results as a broad picture.
+--cache-sim=yes: 	Simulates a CPU cache, flattened to 2 levels, L1 and LL. It shows you where you get cache misses. L1 is by default a model of your host CPU L1, but you can change size, line-size, and associativity.
+--dump-instr=yes:		Collects statistics per instruction instead of per source line. Can help pinpointing bottlenecks.
+--branch-sim=yes:		Simulates a branch predictor.
