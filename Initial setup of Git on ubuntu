@@ -1,0 +1,8 @@
+Once Git is installed, you need to do a one-time system setup to configure it by declaring
+the name and email address you want associated with all your Git commits
+
+Command Line
+$ git config --global user.name "Your Name"
+$ git config --global user.email "yourname@email.com"
+You can always change these configs later if you desire by retyping the same com-
+mands with a new name or email address.
